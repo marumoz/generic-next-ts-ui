@@ -1,0 +1,43 @@
+{
+	"formId"        : "Login",
+    "variant"       : "toplabel",
+    "sections"      : [
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+					"type"         : "email",
+					"id"           : "username",
+                    "label"        : "Username",
+                    "helperText"   : "",
+                    "validation"   : [
+                        {
+                            "type" : "isEmail",
+                            "error": "Please enter a valid username"
+                        }
+					]
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+					"type"         : "password",
+					"id"           : "password",
+                    "label"        : "Password",
+                    "disablePaste" : false,
+                    "helperText"   : "",
+                    "validation"   : [
+                        {
+                            "type" : "isAny",
+                            "error": "Invalid Password"
+                        }
+                    ]
+                }
+            ]
+        }
+	]
+}
