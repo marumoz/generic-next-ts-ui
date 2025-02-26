@@ -1,19 +1,29 @@
 "use client"
 
-// import { isValidPhoneNumber, findPhoneNumbersInText } from 'libphonenumber-js'
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
-const fastValidation = ( input: string, min: number | string, max: number | string, errorMessage: string, validatorName: string, customExpression?: string ) => {
+interface ValidationProps {
+    input: string
+    type: string
+    error: string
+    min?: number
+    max?: number
+    expression?: string
+}
+const fastValidation = ( props: ValidationProps ) => {
+    const { input, min, max, error: errorMessage, type: validatorName, expression: customExpression } = props;
 
 	// const Validator = require("fastest-validator"); 
 	// const v         = new Validator();
+    const phoneUtil = PhoneNumberUtil.getInstance();
 
 	interface Response {
 		isValid: boolean
 		message?: string
 	}
 
-	let schema = {}
-	let checkSchema = false
+	// let schema = {}
+	// let checkSchema = false
 	let oldLength
 	let newLength
 	let response: Response = {
@@ -22,6 +32,10 @@ const fastValidation = ( input: string, min: number | string, max: number | stri
 	}
 	
 	switch ( validatorName ) {
+		// case "acceptedFileType":{
+			
+		// }
+		// 	break;
 		case "customExpression":{
 			
 			response = {
@@ -31,7 +45,7 @@ const fastValidation = ( input: string, min: number | string, max: number | stri
 
 			try {
 				if(customExpression){
-					let mGExp = new RegExp(customExpression)
+					const mGExp = new RegExp(customExpression)
 					response = {
 						isValid : mGExp.test(input),
 						message : ""
@@ -100,17 +114,14 @@ const fastValidation = ( input: string, min: number | string, max: number | stri
 
 			break;
 		case "isValidCardExpiry":
-
-			let parts = input.split ( "/" )
+            const parts = input.split ( "/" )
 
 			if ( parts.length === 2 ) {
-				let d     = new Date()
-				let year  = d.getFullYear().toString().slice(2)
-				let month = d.getMonth() + 1
+				const d     = new Date()
+				const year  = d.getFullYear().toString().slice(2)
+				const month = d.getMonth() + 1
 
 				// current year validation
-				
-
 				if ( 
 					input.length       === 5   && 
 					parts[0].length    === 2   && 
@@ -160,35 +171,31 @@ const fastValidation = ( input: string, min: number | string, max: number | stri
 			}
 			break
 		case "isDiasporaPhoneNumber":{
-			// let check = findPhoneNumbersInText (input)
- 
-			response.isValid = true
+			try {
+                response.isValid = phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(input));
+            } catch (error) {
+                console.error(error)
+                response.isValid = false;
+            }
 		}break
 		case "isStatement" :
-
-			input = input.replace ( /[.]/g,' ' )//replace dots with spaces ( eclectics issues )
-			input = input.toString().trim()
-		
-			try {
-				let dataLength = input.length
-				let regex = /[^A-Za-z\s]+$/i
-				let newData = input.replace(regex, "")
-				let newDataLength = newData.length
-				if (dataLength > 0 && dataLength === newDataLength) {
-					response.isValid = true
-				}else {
-                    response.isValid = false
-				}
-				if (max && dataLength > Number(max)) {
-					response = {
-						isValid : false,
-						message : `Exceeds length ${max}`
-					}
-				}
-			}
-			catch ( e ) {
-				response.isValid = false
-			}
+            try {
+                const dataLength = input.length
+                response = {
+                    isValid : /[^A-Za-z\s]+$/.test(input.toString().trim())
+                }
+                if (max && dataLength > Number(max)) {
+                    response = {
+                        isValid : false,
+                        message : `Exceeds length ${max}`
+                    }
+                }
+            }catch ( e ) {
+                console.error(e)
+                response = {
+                    isValid : false
+                }
+            }
 			break;
 		
 		// case "isBillAmount":
@@ -279,7 +286,7 @@ const fastValidation = ( input: string, min: number | string, max: number | stri
 		// 	response.isValid = typeof checkSchema === 'boolean' ? checkSchema : false
 		// 	break
 		case "isText":
-			let oldInp = input.replace(/[^A-Za-z ]/g, '')
+			const oldInp = input.replace(/[^A-Za-z ]/g, '')
 			if(input === oldInp && input.length > 1){
 				response.isValid = true
 			}else{
@@ -313,10 +320,10 @@ const fastValidation = ( input: string, min: number | string, max: number | stri
 		// 	break
 		case "isKraPin":
 			if ( input.length > 0 ) {
-				let startsWithLetter = input[0].match(/[a-zA-Z]/i) && input[0].length === 1 || false
-				let endsWithLetter   = input[input.length-1].match(/[a-zA-Z]/i) && input[input.length-1].length === 1 || false
-				let contains9Digits  = input.replace( /[^0-9]/g,'').length === 9
-				let contains2Letters = input.replace( /[^a-z]/gi,'').length === 2
+				const startsWithLetter = input[0].match(/[a-zA-Z]/i) && input[0].length === 1 || false
+				const endsWithLetter   = input[input.length-1].match(/[a-zA-Z]/i) && input[input.length-1].length === 1 || false
+				const contains9Digits  = input.replace( /[^0-9]/g,'').length === 9
+				const contains2Letters = input.replace( /[^a-z]/gi,'').length === 2
 
 				if ( startsWithLetter && endsWithLetter && contains9Digits && contains2Letters && input.length === 11 ){
 					response.isValid = true
@@ -340,10 +347,12 @@ const fastValidation = ( input: string, min: number | string, max: number | stri
 			}
 			break;
 		case "isPhoneNumber":{
-
-			// let check = isValidPhoneNumber (input, 'KE')
- 
-            response.isValid = true
+			try {
+                response.isValid = phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(input));
+            } catch (error) {
+                console.error(error)
+                response.isValid = false;
+            }
 		}break;
 		case "isCbAccountNumber":
 			oldLength= input.length
@@ -390,7 +399,7 @@ const fastValidation = ( input: string, min: number | string, max: number | stri
 				break;
 		case "isEmail":
 			const re = /^(([^<>()[\]\\.,:\s@\"]+(\.[^<>()[\]\\.,:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-			let isEmail = re.test(input)
+			const isEmail = re.test(input)
 			
 				response = {
 					isValid: isEmail,

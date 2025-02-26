@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import styled from 'styled-components'
 import fastValidation   from "@services/helpers/fast-validation";
@@ -11,10 +13,17 @@ interface InputFields {
     hasError: boolean
     optional: boolean
 }
+interface ValidationProps {
+    type: string
+    error: string
+    min?: number
+    max?: number
+    expression?: string
+}
 interface InputProps {
     variant: string
     helperText?: string
-    message?: string
+    message: string
     style?: { medium?: boolean, mdRight?: boolean }
     hasError: boolean
     label?: string
@@ -29,10 +38,10 @@ interface InputProps {
     digitsOnly?: boolean
     disablePaste?: boolean
     wholeNumber?: boolean
-    validation?: { [ key: string]: string }[]
-    onBlurActions: { [ key: string]: BlurFunc }
+    validation?: ValidationProps[]
+    onBlurActions?: { [ key: string]: BlurFunc }
     formStatus: { [ key: string]: string | InputFields[] | FormStateFunc }
-    txnData: { [ key: string]: string }
+    txnData?: {}
     updateText(inputId: string, formId: string, {  }): void
     updateState(inputId: string, formId: string, {  }): void
 }
@@ -41,7 +50,7 @@ const TextInput = (props: InputProps) => {
     const {
         variant,
         helperText,
-        style = {},
+        style,
         hasError,
         label,
         inputId,
@@ -57,7 +66,7 @@ const TextInput = (props: InputProps) => {
         txnData,
         onBlur,
         onBlurActions,
-        validation= [],
+        validation = [],
         updateText,
         updateState
     } = props;
@@ -73,19 +82,19 @@ const TextInput = (props: InputProps) => {
         const input = (event.target as HTMLInputElement).value
 
         if(event.keyCode === 13){
-            for ( let v of validation ){
+            for ( const v of validation ){
 
-				const { isValid, message = `Invalid ${label}` } = fastValidation( 
-					input, 
-					v.min,
-					v.max,
-					v.error, 
-					v.type ,
-                    v.expression
-				)
+				const { isValid, message = `Invalid ${label}` } = fastValidation({ 
+                    input, 
+                    min: v.min,
+                    max: v.max,
+                    error: v.error, 
+                    type: v.type ,
+                    expression: v.expression
+                })
 
 				if ( !isValid ) {
-					updateState( inputId, formId, { hasError: true, textInput: input, message: `Invalid ${label}` })
+					updateState( inputId, formId, { hasError: true, textInput: input, message })
 					break
 				}
 			}
@@ -105,9 +114,7 @@ const TextInput = (props: InputProps) => {
         }
         
         updateText(inputId, formId, { textInput: input })
-
         onChange && onBlurActions && onBlurActions[onChange] && onBlurActions[onChange]({ ...formStatus, input, inputId, ...txnData })
-        
     }
     const validateOnBlur = (event: React.FocusEvent<HTMLInputElement>) => {
         let input = event.target.value
@@ -115,65 +122,68 @@ const TextInput = (props: InputProps) => {
             input = input.replace(/,/g, '')
         }
 
-        for ( let v of validation ){
-			const { isValid, message = v.error } = fastValidation ( 
+        let passedValidation = true
+        for ( const v of validation ){
+			const { isValid, message = v.error } = fastValidation({ 
 				input, 
-				v.min,
-				v.max,
-				v.error, 
-				v.type ,
-                v.expression
-			)
+				min: v.min,
+				max: v.max,
+				error: v.error, 
+				type: v.type ,
+                expression: v.expression
+			});
 
 			if ( !isValid ) {
-				updateState( inputId, formId, { hasError: true, textInput: input, message: v.error })
+				updateState( inputId, formId, { hasError: true, textInput: input, message })
+                passedValidation = false
 				break
 			}
-			else {
-				//update the form state for this particular input
-				updateState( inputId, formId, { hasError: false, textInput: input, message: helperText })
-
-				//perform our on blur actions
-				onBlur && onBlurActions && onBlurActions[onBlur] && onBlurActions[onBlur]({ ...formStatus, input, inputId,...txnData })
-			}
 		}
+        if(passedValidation){
+            updateState( inputId, formId, { hasError: false, textInput: input, message: helperText })
+        }
+        if(passedValidation && onBlur && onBlurActions?.[onBlur] ){
+            onBlurActions[onBlur]({ ...formStatus, input, inputId,...txnData })
+        }
     }
 
-    if(variant && variant === 'toplabel')
+    if(variant === 'toplabel'){
         return (
-            <label className={`w-full h-auto mb-4 text-sm ${style.medium ? 'md:w-sm' : ''} ${style.mdRight ? 'md:ml-sm' : ''}`}>
-                {label}
-                <LabelInput
-                className={`w-full pl-2 mt-3 text-xs border rounded-md h-9 focus:outline-none active:outline-none ${hasError ? 'focus:border-0 focus:ring ring-warning ring-opacity-70' : 'focus:border-0 focus:ring ring-primary-100 ring-opacity-40'}`}
-                id        = {inputId}
-                // ref       = {inputRef}
-                autoFocus = {autofocus}
-                type      = {type}
-                disabled  = {disabled}
-                onBlur    = {validateOnBlur}
-                onKeyUp   = {validateOnEnter}
-                onChange  = {handleChangeText}
-                value     = {value}
-                required
-                haserror = {hasError.toString()}
-                />
-                <TextMessage haserror={hasError.toString()} >{message}</TextMessage>
-            </label>
+            <div className={`w-full h-auto mt-4 text-sm text-left ${style?.medium ? 'md:w-sm' : ''} ${style?.mdRight ? 'md:ml-sm' : ''}`}>
+                <label id={inputId}>
+                    {label}
+                    <LabelInput
+                    className={`w-full bg-transparent pl-2 mt-1 text-xs border rounded-md h-9 focus:outline-none active:outline-none ${hasError ? 'border border-1 border-warning focus:border-0 focus:ring ring-warning ring-opacity-70' : 'focus:border-0 focus:ring ring-primary-100 ring-opacity-40'}`}
+                    id        = {inputId}
+                    // ref       = {inputRef}
+                    autoFocus = {autofocus}
+                    type      = {type}
+                    disabled  = {disabled}
+                    onBlur    = {validateOnBlur}
+                    onKeyUp   = {validateOnEnter}
+                    onChange  = {handleChangeText}
+                    value     = {value}
+                    required
+                    $haserror = {hasError.toString()}
+                    autoComplete='off'
+                    />
+                    <span className={`block ${hasError ? 'text-warning' : 'text-inherit'}`} >{message}</span>
+                </label>
+            </div>
         )
-}
+    }else if(variant === 'outlined'){
+        <div>
+            create outlined text input
+        </div>
+    }
+};
 
 interface StyledProps {
-    haserror: string
+    $haserror: string
 }
 
 const LabelInput = styled.input<StyledProps>`
-    border-color: ${p => p.haserror === 'true' ? p.theme.dangerColor : p.theme.borderColor};
-    background: transparent;
     cursor: ${props => props.disabled ? 'not-allowed' : ''} ;
 `;
 
-const TextMessage = styled.p<StyledProps>`
-    color: ${props => props.haserror === 'true' ? props.theme.dangerColor : 'inherit'};
-`;
-
-export default TextInput
+export default TextInput;

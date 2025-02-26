@@ -7,14 +7,97 @@
             "display"              : "row",
             "elements"             : [
                 {
+					"type"         : "date",
+					"id"           : "dob",
+                    "label"        : "DOB:",
+					"style" : {
+                        "medium": true
+					}
+                },
+                {
+					"type"         : "date",
+					"id"           : "over18",
+                    "label"        : "Over 18",
+                    "minDate"      : "today",
+					"style" : {
+                        "medium": true,
+                        "mdRight": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+					"type"         : "daterange",
+					"id"           : "rangedob",
+                    "label"        : "DOB:",
+					"style" : {
+                        "medium": true
+					}
+                },
+                {
+					"type"         : "daterange",
+					"id"           : "rangeover18",
+                    "label"        : "Over 18",
+                    "minDate"      : "today",
+					"style" : {
+                        "medium": true,
+                        "mdRight": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
 					"type"         : "email",
 					"id"           : "username",
                     "label"        : "Username",
-                    "helperText"   : "",
                     "validation"   : [
                         {
                             "type" : "isEmail",
                             "error": "Please enter a valid username"
+                        }
+					],
+					"style" : {
+                        "medium": true
+					}
+                },
+                {
+					"type"         : "text",
+					"id"           : "password",
+                    "label"        : "Password",
+                    "validation"   : [
+                        {
+                            "type" : "isNotEmpty",
+                            "error": "Please enter a valid password"
+                        }
+					],
+					"style" : {
+                        "medium": true,
+                        "mdRight": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+					"type"         : "textarea",
+					"id"           : "narration",
+                    "label"        : "Narration",
+                    "optional"     : true,
+                    "validation"   : [
+                        {
+                            "type" : "isAny",
+                            "error": "Please enter a reason"
                         }
 					]
                 }
@@ -25,18 +108,263 @@
             "display"              : "row",
             "elements"             : [
                 {
-					"type"         : "password",
-					"id"           : "password",
-                    "label"        : "Password",
-                    "disablePaste" : false,
+                    "type"         : "select",
+                    "id"           : "categoryCode",
+                    "label"        : "Item Category",
+                    "optionsList"  : [
+                        {
+                            "id": 1,
+                             "label": "DevOps",
+                             "value": "DEVOPS"
+                        },
+                        {
+                            "id": 2,
+                             "label": "Corporate",
+                             "value": "CORPORATE"
+                        },
+                        {
+                            "id": 3,
+                             "label": "MONEY",
+                             "value": "MONEY"
+                        }
+                    ],
+					"style" : {
+                        "medium": true
+					}
+                },
+                {
+                    "type"         : "select",
+                    "id"           : "destinationCountry",
+                    "label"        : "Item Category",
+                    "optionsList"  : [
+                        {
+                            "id": 1,
+                             "label": "Italy",
+                             "value": "Italy"
+                        },
+                        {
+                            "id": 2,
+                             "label": "Namibia",
+                             "value": "Namibia"
+                        },
+                        {
+                            "id": 3,
+                             "label": "Zambia",
+                             "value": "Zambia"
+                        }
+                    ],
+					"style" : {
+                        "medium": true,
+                        "mdRight": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+					"type"         : "autocomplete",
+					"id"           : "topic",
+                    "label"        : "Consistent Growth",
                     "helperText"   : "",
+                    "placeholder"  : "type topic to select",
+                    "optionsList"  : [
+                        {
+                            "id": 1,
+                             "label": "DevOps",
+                             "value": "DEVOPS"
+                        },
+                        {
+                            "id": 2,
+                             "label": "Corporate",
+                             "value": "CORPORATE"
+                        },
+                        {
+                            "id": 3,
+                             "label": "MONEY",
+                             "value": "MONEY"
+                        },
+                        {
+                            "id": 4,
+                             "label": "Make It",
+                             "value": "MAKEIT"
+                        }
+                    ],
+					"style" : {
+                        "medium": true
+					}
+                },
+                {
+					"type"         : "phone",
+					"id"           : "phoneNumber",
+                    "label"        : "Mobile number",
                     "validation"   : [
                         {
-                            "type" : "isAny",
-                            "error": "Invalid Password"
+                            "type" : "isPhoneNumber",
+                            "error": "Please enter a valid mobile number"
                         }
-                    ]
+					],
+					"style" : {
+                        "medium": true,
+                        "mdRight": true
+					}
                 }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+					"type"         : "phone",
+					"id"           : "phoneNumber",
+                    "label"        : "Mobile number",
+                    "validation"   : [
+                        {
+                            "type" : "isPhoneNumber",
+                            "error": "Please enter a valid mobile number"
+                        }
+					],
+					"style" : {
+                        "medium": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+                    "type"         : "radio",
+                    "id"           : "verificationType",
+                    "label"  : "Verificatrion type",
+                    "optionsList"   : [
+                        {
+                            "id"  : 1,
+                            "value"  : "SMS",
+                            "label"  : "SMS"
+                        },
+                        {
+                            "id"  : 2,
+                            "value"  : "TOTP",
+                            "label"  : "Soft Token"
+                        }
+                    ],
+					"style" : {
+                        "medium": true
+					}
+                },
+                {
+                    "type"         : "pinpad",
+                    "id"           : "otp",
+                    "onBlur"       : "validateOtp",
+                    "label"        : "Enter one time PIN “OTP” received on phone",
+                    "validation": [
+                        {
+                            "type": "is6Digits",
+                            "error": "Invalid verification code"
+                        }
+                    ],
+                    "error"        : "Please enter a valid Verification Code",
+					"style" : {
+                        "medium": true,
+                        "mdRight": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+                    "type"         : "checkbox",
+                    "id"           : "termsAndConditions",
+                    "label"        : "<p> By ticking the checkbox you confirm that you have agreed to the <a style='color:#F7941D;' target = '_blank' href='https://www.faulukenya.com/privacy-policy/' rel='noreferrer'>Terms And Conditions</a> of our Counter Guarantee & Indemnity form.</p>",
+                    "helperText"   : "Signed Off Counter Indemity Letter",
+					"style" : {
+                        "medium": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+				{
+					"type"          : "downloadInput",
+					"id"            : "downloadTemplate",
+					"label"         : "Get Template",
+                    "helperText"    : "Bulk Template"
+				} 
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+				{
+                    "type"         : "file",
+                    "id"           : "idNumber",
+                    "label"        : "ID Number*",
+                    "accept"       : ".pdf,.jpg,.png,.jpeg",
+                    "validation"   : [
+                        {
+                            "type"  : "acceptedFileType",
+                            "accept": ".pdf,.jpg,.png,.jpeg",
+                            "error" : "Invalid File Type"
+                        }
+                    ],
+					"style" : {
+                        "medium": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle"           : "",
+            "display"              : "row",
+            "elements"             : [
+                {
+                    "type"         : "dragndDrop",
+                    "id"           : "imageItem",
+                    "label"        : "Drag a file here (max 2MB) <br/> or browse a file to upload",
+                    "helperText"   : "Attach a clear image of the item",
+                    "accept"       : ".pdf,.jpg,.png,.jpeg",
+                    "maximum"      : 5,
+                    "maxSize"      : 2,
+                    "optional"     : true,
+                    "validation"   : [
+                        {
+                            "type"  : "acceptedFileType",
+                            "accept": ".png,.jpg,.jpeg,.pdf",
+                            "error" : "Invalid File Type"
+                        }
+                    ],
+					"style" : {
+                        "medium": true
+					}
+                },
+                {
+                    "type": "beneficiary-radio",
+                    "id": "beneficiaryType",
+                    "label": "select beneficiary type:",                    
+                    "onBlur": "showBeneficiaries",
+					"style" : {
+                        "medium": true,
+                        "mdRight": true
+					}
+                }
+            ]
+        },
+        {
+            "groupTitle": "",
+            "display": "row",
+            "elements": [
             ]
         }
 	]
