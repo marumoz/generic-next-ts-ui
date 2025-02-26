@@ -75,7 +75,7 @@ const DatePickerInput = (props: InputProps) => {
             <div className={`relative w-full mt-3 text-xs border rounded-md h-9 ${hasError ? 'border border-warning focus:border-0 focus:ring ring-warning ring-opacity-70' : 'focus:border-0 focus:ring ring-primary-100 ring-opacity-40'}`}>
                 <DatePicker
                     onChange = { handleChangeText }
-                    value    = {value ? dayjs(value) : dayjs()}
+                    // value    = {value ? dayjs(value) : dayjs()}
                     className={`absolute top-0 left-0 w-full h-full m-0 bg-transparent border-0 rounded-md focus:outline-none`}
                     maxDate={maxDate ? dayjs(maxDate) : undefined} 
                     id = {inputId}
