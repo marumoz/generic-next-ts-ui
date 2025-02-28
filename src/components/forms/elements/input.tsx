@@ -35,6 +35,7 @@ interface InputProps {
     onChange?: string
     onBlur?: string
     disabled?: boolean
+    optional?: boolean
     digitsOnly?: boolean
     disablePaste?: boolean
     wholeNumber?: boolean
@@ -57,6 +58,7 @@ const TextInput = (props: InputProps) => {
         autofocus,
         type = 'text',
         disabled,
+        optional,
         value,
         digitsOnly,
         wholeNumber,
@@ -163,7 +165,7 @@ const TextInput = (props: InputProps) => {
                     onKeyUp   = {validateOnEnter}
                     onChange  = {handleChangeText}
                     value     = {value}
-                    required
+                    required  = {!optional}
                     $haserror = {hasError.toString()}
                     autoComplete='off'
                     />

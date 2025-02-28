@@ -100,11 +100,9 @@ const DynamicForm = (props: FormProps) => {
 
     useEffect(() => {
         createFormState();
-    
-        return () => {};
     }, []);
 
-    const createFormState = (): string => {
+    const createFormState = () => {
         console.log('dynamic form',dynamicState)
         if(!isWizardComponent){
             //formState = [{inputId: "username", hasError: false, message: "", textInput: ""}]
@@ -131,7 +129,7 @@ const DynamicForm = (props: FormProps) => {
             });
             setDynamicFormState({ [formId]: formState });
         }
-        return "success";
+        return {};
     };
     const formSetFormState = (formId: string, newState: []) => {
         setDynamicFormState({ [formId]: newState });
@@ -248,6 +246,7 @@ const DynamicForm = (props: FormProps) => {
                                         key           = { `${input.id}-${index}` }
                                         inputId       = { `${input.id}` }
                                         hasError      = { inputState.hasError }
+                                        optional      = { inputState.optional }
                                         formId        = { formId }
                                         variant       = { config.variant } 
                                         disabled      = { input.disabled }

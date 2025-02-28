@@ -69,7 +69,7 @@ const SelectInput = (props: InputProps) => {
 
     if(variant === 'toplabel'){
         return (
-            <div className={`relative inline-block w-full h-9 mt-4 mb-5 text-xs text-left ${style?.medium ? 'md:w-sm' : ''} ${style?.mdRight ? 'md:ml-sm' : ''}`} id={inputId}>
+            <div className={`relative inline-block w-full h-9 mt-4 mb-5 text-xs text-left ${style?.medium ? 'md:w-sm' : ''} ${style?.mdRight ? 'md:ml-sm' : ''}`}>
                 <label className="text-sm" htmlFor={inputId}>{label}</label>
                 <select id={inputId} name={inputId} className={`w-full h-full pl-2 mt-1 border rounded focus:outline-none active:outline-none ${hasError ? 'border border-warning focus:border-0 focus:ring ring-warning ring-opacity-70' : 'focus:border-0 focus:ring ring-primary-100 ring-opacity-40'}`} onChange={ e => handleChangeText(e)}>
                     {
