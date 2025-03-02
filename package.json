@@ -26,12 +26,15 @@
         "react-dom": "^19.0.0",
         "react-icons": "^5.4.0",
         "react-phone-input-2": "^2.15.1",
-        "styled-components": "^6.1.15"
+        "react-to-print": "^3.0.5",
+        "styled-components": "^6.1.15",
+        "xlsx": "^0.18.5"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.2.0",
+        "@types/comma-number": "^2.1.2",
         "@types/google-libphonenumber": "^7.4.30",
         "@types/node": "^20",
         "@types/react": "^19",

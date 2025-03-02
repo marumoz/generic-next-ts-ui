@@ -4,7 +4,7 @@ import { MdDeleteForever } 		from 'react-icons/md';
 import { GoPaperclip }          from "react-icons/go";
 import styled 					from 'styled-components';
 
-import fastValidation from "@services/helpers/fast-validation";
+import fastValidation from "@services/helpers/fastValidation";
 
 interface ValidationProps {
     type: string

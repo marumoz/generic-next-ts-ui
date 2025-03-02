@@ -1,5 +1,5 @@
 import PhoneInput       from 'react-phone-input-2';
-import fastValidation   from "@services/helpers/fast-validation";
+import fastValidation   from "@services/helpers/fastValidation";
 import styled           from 'styled-components';
 import 'react-phone-input-2/lib/style.css'
 

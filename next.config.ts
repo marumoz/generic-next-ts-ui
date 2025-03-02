@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    /* config options here */
+    env: {
+        IBLink: "https://160.119.244.34:6488/"
+    }
 };
 
 export default nextConfig;

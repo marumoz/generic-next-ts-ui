@@ -1,5 +1,5 @@
 import React from 'react'
-import fastValidation from "@services/helpers/fast-validation";
+import fastValidation from "@services/helpers/fastValidation";
 
 type BlurFunc = ({}) => void
 type FormStateFunc = (formId: string, newState:[]) => void

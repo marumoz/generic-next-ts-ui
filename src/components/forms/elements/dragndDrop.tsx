@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { GoPaperclip }          from "react-icons/go";
 
-import fastValidation from "@services/helpers/fast-validation";
+import fastValidation from "@services/helpers/fastValidation";
 
 interface ValidationProps {
     type: string
