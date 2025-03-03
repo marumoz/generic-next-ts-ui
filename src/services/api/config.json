@@ -1,0 +1,7 @@
+{
+    "api": "http://localhost:4000",
+    "paths": {
+        "bulk-template" 	   	: "templates/bulk-upload-template.xlsx",
+	    "fetch-public-key" 		: "eef-ib-api/authentication/fetch-public-key"
+    }
+}

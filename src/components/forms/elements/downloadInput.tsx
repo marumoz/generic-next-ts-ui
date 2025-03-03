@@ -1,5 +1,7 @@
 import React from 'react';
-import urls from '@services/api/api.paths';
+
+import conf from '@services/api/config.json';
+const urls = conf.paths
 
 interface DndProps { 
     label: string 
